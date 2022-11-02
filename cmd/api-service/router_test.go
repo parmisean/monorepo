@@ -28,8 +28,10 @@ func TestGetHealthRoute(t *testing.T) {
 
 	bytes.TrimSpace(body)
 
-	if res.StatusCode != http.StatusBadGateway {
-		t.Errorf("got: %v; want: %v", res.StatusCode, http.StatusOK)
+	want := http.StatusOK
+
+	if res.StatusCode != want {
+		t.Errorf("got: %v; want: %v", res.StatusCode, want)
 	}
 
 	if string(body) != healthResponse {
