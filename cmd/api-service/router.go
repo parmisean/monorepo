@@ -6,7 +6,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-const healthResponse = "Hello"
+const healthResponse = "available"
 
 func (a *application) routes() *chi.Mux {
 	r := chi.NewRouter()
