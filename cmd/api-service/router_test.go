@@ -9,7 +9,7 @@ import (
 )
 
 func TestGetHealthRoute(t *testing.T) {
-	app := Application{}
+	app := application{}
 	testSrv := httptest.NewServer(app.routes())
 
 	defer testSrv.Close()
