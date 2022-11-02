@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type application struct {
+type Application struct {
 	Config config
 }
 
@@ -22,7 +22,7 @@ func main() {
 	flag.IntVar(&cfg.Port, "port", 4000, "API Service port")
 	flag.Parse()
 
-	app := &application{
+	app := &Application{
 		Config: cfg,
 	}
 

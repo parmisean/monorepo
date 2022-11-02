@@ -9,7 +9,7 @@ import (
 )
 
 func TestGetHealthRoute(t *testing.T) {
-	app := application{}
+	app := Application{}
 	testSrv := httptest.NewServer(app.routes())
 
 	defer testSrv.Close()
@@ -28,7 +28,7 @@ func TestGetHealthRoute(t *testing.T) {
 
 	bytes.TrimSpace(body)
 
-	if res.StatusCode != http.StatusOK {
+	if res.StatusCode != http.StatusBadGateway {
 		t.Errorf("got: %v; want: %v", res.StatusCode, http.StatusOK)
 	}
 

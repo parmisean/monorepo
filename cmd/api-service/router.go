@@ -8,7 +8,7 @@ import (
 
 const healthResponse = "Hello"
 
-func (a *application) routes() *chi.Mux {
+func (a *Application) routes() *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
