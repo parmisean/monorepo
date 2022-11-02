@@ -1,18 +1,10 @@
-name: API-Service
+name: main-workflow
 
 on:
   push:
     branches: [main]
-    paths:
-      - '.github/workflows/api-service.yml'
-      - 'build/package/api-service.dockerfile'
-      - 'cmd/api-service/**'
   pull_request:
     branches: [main]
-    paths:
-      - '.github/workflows/api-service.yml'
-      - 'build/package/api-service.dockerfile'
-      - 'cmd/api-service/**'
 
 jobs:
   build-and-lint:
@@ -47,9 +39,10 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: 1.19
+          cache: true
 
       - name: Run tests
-        run: go test -race -vet=off ./...
+        run: go test -vet=off ./...
 
   audit:
     runs-on: ubuntu-20.04
@@ -65,3 +58,38 @@ jobs:
 
       - name: Run go vet
         run: go vet ./...
+
+  build-deploy-list:
+    runs-on: ubuntu-20.04
+    needs: [test, audit]
+    outputs:
+      api_service: ${{ steps.filter.outputs.api_service }}
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            shared: &shared
+              - .github/workflows/**
+            api_service:
+              - *shared
+              - build/package/api-service.dockerfile
+              - cmd/api-service/**
+
+  deploy-api-gateway:
+    runs-on: ubuntu-20.04
+    needs: build-deploy-list
+    if: ${{ github.event_name == 'push' && needs.build-deploy-list.outputs.api_service == 'true' }}
+    steps:
+      - name: deploy
+        run: echo deploying api gateway
+
+  deploy-api-service:
+    runs-on: ubuntu-20.04
+    needs: build-deploy-list
+    if: ${{ github.event_name == 'push' && needs.build-deploy-list.outputs.api_service == 'true' }}
+    steps:
+      - name: deploy
+        run: echo deploying api service
