@@ -5,13 +5,14 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/api-service.yml'
-      - 'cmd/api-service/**'
       - 'build/package/api-service.dockerfile'
+      - 'cmd/api-service/**'
   pull_request:
     branches: [main]
     paths:
-      - 'cmd/api-service/**'
+      - '.github/workflows/api-service.yml'
       - 'build/package/api-service.dockerfile'
+      - 'cmd/api-service/**'
 
 jobs:
   build-and-lint:
