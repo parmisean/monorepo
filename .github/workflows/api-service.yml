@@ -1,10 +1,16 @@
-name: Audit
+name: API-Service
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'cmd/api-service/**'
+      - 'build/package/api-service.dockerfile'
   pull_request:
     branches: [main]
+    paths:
+      - 'cmd/api-service/**'
+      - 'build/package/api-service.dockerfile'
 
 jobs:
   build-and-lint:
