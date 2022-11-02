@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/api-service.yml'
       - 'cmd/api-service/**'
       - 'build/package/api-service.dockerfile'
   pull_request:
