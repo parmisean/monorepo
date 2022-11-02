@@ -9,8 +9,8 @@ import (
 )
 
 func TestGetHealthRoute(t *testing.T) {
-	app := Application{}
-	testSrv := httptest.NewServer(app.Routes())
+	app := application{}
+	testSrv := httptest.NewServer(app.routes())
 
 	defer testSrv.Close()
 
@@ -32,7 +32,7 @@ func TestGetHealthRoute(t *testing.T) {
 		t.Errorf("got: %v; want: %v", res.StatusCode, http.StatusOK)
 	}
 
-	if string(body) != HealthResponse {
-		t.Errorf("got: %v; want: %v", string(body), HealthResponse)
+	if string(body) != healthResponse {
+		t.Errorf("got: %v; want: %v", string(body), healthResponse)
 	}
 }

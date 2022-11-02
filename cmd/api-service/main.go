@@ -8,27 +8,27 @@ import (
 	"time"
 )
 
-type Application struct {
-	Config Config
+type application struct {
+	Config config
 }
 
-type Config struct {
+type config struct {
 	Port int
 }
 
 func main() {
-	var cfg Config
+	var cfg config
 
 	flag.IntVar(&cfg.Port, "port", 4000, "API Service port")
 	flag.Parse()
 
-	app := &Application{
+	app := &application{
 		Config: cfg,
 	}
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.Port),
-		Handler:      app.Routes(),
+		Handler:      app.routes(),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  15 * time.Second,

@@ -6,14 +6,14 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-const HealthResponse = "Hello"
+const healthResponse = "Hello"
 
-func (a *Application) Routes() *chi.Mux {
+func (a *application) routes() *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(HealthResponse))
+		w.Write([]byte(healthResponse))
 	})
 
 	return r
