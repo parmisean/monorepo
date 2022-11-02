@@ -39,7 +39,6 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: 1.19
-          cache: true
 
       - name: Run tests
         run: go test -race -vet=off ./...
@@ -52,7 +51,6 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: 1.19
-          cache: true
 
       - name: Verify dependencies
         run: go mod verify
