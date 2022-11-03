@@ -8,10 +8,18 @@ on:
 
 jobs:
   build-and-lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: CommitLint
+        uses: wagoid/commitlint-github-action@v5
+
+      - name: Setup Go
+        uses: actions/setup-go@v3
         with:
           go-version: 1.19
           cache: true
@@ -25,49 +33,46 @@ jobs:
       - name: Run golint
         run: golint -set_exit_status ./...
 
-      - name: Install staticcheck
-        run: go install honnef.co/go/tools/cmd/staticcheck@latest
-
-      - name: Run staticcheck
-        run: staticcheck ./...
-
-  test:
-    runs-on: ubuntu-20.04
-    needs: build-and-lint
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.19
-          cache: true
-
-      - name: Run tests
-        run: go test -vet=off ./...
-
-  audit:
-    runs-on: ubuntu-20.04
-    needs: build-and-lint
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.19
-
       - name: Verify dependencies
         run: go mod verify
 
       - name: Run go vet
         run: go vet ./...
 
+      - name: Install staticcheck
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - name: Run staticcheck
+        run: staticcheck ./...
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: build-and-lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+          cache: true
+
+      - name: Run tests
+        run: go test -race -vet=off ./... -v
+
   build-deploy-list:
-    runs-on: ubuntu-20.04
-    needs: [test, audit]
+    runs-on: ubuntu-latest
+    needs: tests
     outputs:
       api_service: ${{ steps.filter.outputs.api_service }}
     if: github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build Changelist
+        uses: dorny/paths-filter@v2
         id: filter
         with:
           filters: |
@@ -79,7 +84,7 @@ jobs:
               - cmd/api-service/**
 
   deploy-api-gateway:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: build-deploy-list
     if: ${{ github.event_name == 'push' && needs.build-deploy-list.outputs.api_service == 'true' }}
     steps:
@@ -87,7 +92,7 @@ jobs:
         run: echo deploying api gateway
 
   deploy-api-service:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: build-deploy-list
     if: ${{ github.event_name == 'push' && needs.build-deploy-list.outputs.api_service == 'true' }}
     steps:
