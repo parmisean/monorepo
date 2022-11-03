@@ -1,4 +1,4 @@
-// API Service
+// API Service - used for testing out GitHub workflows
 package main
 
 import (
