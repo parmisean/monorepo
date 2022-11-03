@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -13,7 +14,10 @@ func (a *application) routes() *chi.Mux {
 
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(healthResponse))
+		_, err := w.Write([]byte(healthResponse))
+		if err != nil {
+			log.Printf("Error: %v", err)
+		}
 	})
 
 	return r
