@@ -32,12 +32,10 @@ jobs:
           go-version: 1.19.3
           cache: true
 
-      # Todo: Research linting
-      - name: Install golint
-        run: go install golang.org/x/lint/golint@latest
-
-      - name: Run golint
-        run: golint -set_exit_status ./...
+      - name: Install and Run GolangCI-Lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.50.1
+          golangci-lint run ./... --out-format=github-actions
 
   build:
     name: Build
