@@ -7,7 +7,7 @@ RUN mkdir /app
 WORKDIR /app
 COPY . ./
 
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags '-w -s' -a -o /bin/api-service /app/cmd/api-service
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags '-w -s' -a -o /bin/api-service /app/cmd/api-service
 
 # Deployment environment
 # ----------------------
