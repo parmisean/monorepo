@@ -29,7 +29,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19
+          go-version: 1.19.3
           cache: true
 
       # Todo: Research linting
@@ -49,7 +49,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19
+          go-version: 1.19.3
           cache: true
 
       - name: Build
@@ -72,7 +72,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19
+          go-version: 1.19.3
           cache: true
 
       - name: Run tests
