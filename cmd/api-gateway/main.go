@@ -20,7 +20,7 @@ type config struct {
 func main() {
 	var cfg config
 
-	flag.IntVar(&cfg.Port, "port", 4000, "API Service port")
+	flag.IntVar(&cfg.Port, "port", 4001, "API Gateway port")
 	flag.Parse()
 
 	app := &application{
